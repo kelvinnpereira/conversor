@@ -10,13 +10,18 @@ public class Conversor{
         return (temperatura - 32.0) / 1.8;
     }
 
-    public static double converter(double temperatura, char escalaAtual, char escalaConverter) throws Exception {
-        if (escalaAtual == 'c' && escalaConverter == 'f') {
-            return celsiusFahrenheit(temperatura);
-        } else if (escalaAtual == 'f' && escalaConverter == 'c') {
-            return fahrenheitCelsius(temperatura);
-        } else {
-            throw new Exception("Não é possivel converter as escalas solicitadas");
+    public static double converter(double temperatura, char escalaAtual, char escalaConverter) {
+        try {
+            if (escalaAtual == 'c' && escalaConverter == 'f') {
+                return celsiusFahrenheit(temperatura);
+            } else if (escalaAtual == 'f' && escalaConverter == 'c') {
+                return fahrenheitCelsius(temperatura);
+            } else {
+                throw new Exception("Não é possivel converter as escalas solicitadas");
+            }
+        } catch (Exception error) {
+            System.out.println(error);
+            return 0.0;
         }
     }
 }
