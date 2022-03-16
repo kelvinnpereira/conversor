@@ -1,38 +1,41 @@
 package br.com.conversor;
 
-import org.junit.ClassRule;
-import org.junit.rules.TestWatcher;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestWatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Testes {
-    @ClassRule
-    public static TestRule classWatchman = new TestWatcher() {
-        @Override
-        protected void starting(Description desc) {
-            System.out.println(desc.testCount());
-        }
+public class Testes implements TestWatcher, AfterAllCallback {
 
-        @Override
-        protected void succeeded(Description desc) {
-            System.out.println("teste: " + desc.testCount());
-        }
+    private static final Logger LOG = LoggerFactory.getLogger(Testes.class);
 
-        @Override
-        protected void finished(Description desc) {
-            System.out.println("Suite completed!");
-        }
-    };
+    private int count = 0, countSucess = 0, countFail = 0;
 
-    @Test
-    public void fails() {
-        assertEquals(1 + 1, 2);
+    @Override
+    public void testSuccessful(ExtensionContext context) {
+        LOG.info("Test Successful for test {}: ", context.getDisplayName());
+        count++;
+        countSucess++;
     }
 
-    @Test
-    public void succeeds() {
-        assertEquals(0, 0);
+    @Override
+    public void testAborted(ExtensionContext context, Throwable cause) {
+        LOG.info("Test Aborted for test {}: ", context.getDisplayName());
+        count++;
+        countFail++;
     }
+
+    @Override
+    public void testFailed(ExtensionContext context, Throwable cause) {
+        LOG.info("Test Failed for test {}: ", context.getDisplayName());
+        count++;
+        countFail++;
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
+        LOG.info("Test result summary for {} {}", context.getDisplayName(), countSucess);
+    }
+
 }
