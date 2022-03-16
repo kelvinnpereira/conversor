@@ -1,31 +1,34 @@
 package br.com.conversor;
 
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.rules.TestWatcher;
+import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Testes {
-    private String watchedLog;
-    private int count = 0;
-
-    @Rule(order = Integer.MIN_VALUE)
-    public TestWatcher watchman = new TestWatcher() {
+    @ClassRule
+    public static TestRule classWatchman = new TestWatcher() {
         @Override
-        protected void failed(Throwable e, Description description) {
-            watchedLog += description + "\n" + "count: " + count;
+        protected void starting(Description desc) {
+            System.out.println(desc.testCount());
         }
 
         @Override
-        protected void succeeded(Description description) {
-            watchedLog += description + " " + "success!\n" + "count: " + count;
+        protected void succeeded(Description desc) {
+            System.out.println("teste: " + desc.testCount());
+        }
+
+        @Override
+        protected void finished(Description desc) {
+            System.out.println("Suite completed!");
         }
     };
 
     @Test
     public void fails() {
-        assertEquals(1+1, 2);
+        assertEquals(1 + 1, 2);
     }
 
     @Test
