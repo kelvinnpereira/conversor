@@ -7,6 +7,6 @@ public class ConversorCelsiusTest {
 
     @Test
     public void testeConvertendoDeCelsiusParaFahrenheit() {
-        assertEquals(Conversor.converter(10, 'c', 'f'), 50.00);
+        assertEquals(Conversor.converter(10, 'c', 'f'), 40.00);
     }
 }
