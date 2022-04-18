@@ -2,4 +2,5 @@ FROM maven:3.6.0-jdk-11-slim
 WORKDIR /conversor
 COPY src /conversor/src
 COPY pom.xml /conversor
-ENTRYPOINT ["mvn", "test"]
+RUN mvn dependency:resolve
+ENTRYPOINT ["mvn", "clean", "test"]
